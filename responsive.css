@@ -1,0 +1,76 @@
+/* css for all phones */
+@media only screen and (max-width: 576px) {
+  html {
+    font-size: 62.5%;
+  }
+
+  .navbar {
+    padding: 1rem !important;
+  }
+
+  #logo {
+    font-size: 1.6rem !important;
+  }
+
+  .heroSec__heroHeading {
+    font-size: 3.2rem;
+    margin-bottom: 4rem !important;
+  }
+
+  #hero-sec {
+    padding: 5em 0;
+  }
+
+  #populationForm {
+    flex-flow: column nowrap;
+    gap: 1rem 0;
+    width: 90%;
+  }
+
+  label[for*='populationInput'] {
+    font-size: 1.2rem !important;
+    font-weight: 400 !important;
+  }
+
+  #populationInput {
+    font-size: 1.6rem;
+    padding: 0.5em 1em;
+  }
+
+  .herSec__bg {
+    width: 200%;
+    margin: 0;
+    height: auto;
+    top: 0;
+  }
+
+  #formBtn {
+    padding: 0.5em 1em;
+    margin-top: 0.5em;
+  }
+
+  .countryDataSec__txt {
+    max-width: 38ch;
+    margin-bottom: 4em;
+  }
+
+  .cards__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch !important;
+    padding: 0 !important;
+    gap: 8em 0 !important;
+    margin: 0 2em;
+  }
+
+  .card {
+    min-width: 100% !important;
+    margin: 0 auto !important;
+    padding-bottom: 1.5em;
+  }
+
+  .__flexWrapper{
+    width: 90%;
+  }
+}
