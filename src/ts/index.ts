@@ -1,36 +1,58 @@
-export const localStorage = window.localStorage;
-export const $_getElement = (query) => {
-  return document.querySelector(query);
+interface IApiDataObject {
+  population: number,
+  country_name: string,
+  ranking: number,
+  world_share: number
 }
-const countryInputForm = $_getElement('#populationForm');
-const countryNameInput = $_getElement('#populationInput');
-const cardsContainer = $_getElement('.cards__container');
-let globalCountriesData = JSON.parse(localStorage.getItem('globalCountriesData')) ?? [];
 
-const addDataToLocalStorage = () => {
+interface ICountryDataObject {
+  worldRank: number
+  countryName: string
+  population: number
+  worldShare: number
+}
+
+type IGlobalCountriesData = ICountryDataObject[] | void[];
+
+export const localStorage: Storage = window.localStorage;
+
+export const $_getElement = <T>(query: string): T => {
+  return document.querySelector(query) as unknown as T;
+}
+
+const countryInputForm = $_getElement<HTMLFormElement>('#populationForm');
+const countryNameInput = $_getElement<HTMLInputElement>('#populationInput');
+const cardsContainer = $_getElement<HTMLUListElement>('.cards__container');
+
+let globalCountriesData: IGlobalCountriesData = JSON.parse(localStorage.getItem('globalCountriesData')) ?? [];
+
+// left
+const addDataToLocalStorage: () => void = () => {
   localStorage.setItem('globalCountriesData', JSON.stringify(globalCountriesData));
 }
 
-const doesCountryNameAlreadyExist = (name) => {
-  const arr = globalCountriesData?.filter(data => data.countryName.toLowerCase() === name.toLowerCase());
+const doesCountryNameAlreadyExist = (name: string): boolean => {
+  const arr = globalCountriesData.filter((data: IGlobalCountriesData) => {
+    return data.countryName.toLowerCase() as string === name.toLowerCase() as string
+  });
   return (arr.length < 1) ? false : true;
 }
 
-const addToglobalCountriesData = (data) => {
+const addToglobalCountriesData = (data: ICountryDataObject) => {
   globalCountriesData = [...globalCountriesData, data];
 }
 
-const capitalizeTheWord = (word) => {
+const capitalizeTheWord = (word: string) => {
   word = word.trim().toLowerCase();
-  const characterArray = word.split("");
-  characterArray[0] = characterArray.at(0).toUpperCase();
+  const characterArray: string[] = word.split("");
+  characterArray[0] = characterArray[0].toUpperCase();
   return characterArray.join('');
 }
 
 export const mapCountriesDataToLi = (data) => {
-  data?.map((data, index) => {
+  data.map((data: ICountryDataObject, index: number) => {
     if (index === 0) cardsContainer.innerHTML = "";
-    const countryCard = `
+    const countryCard: string = `
   <li class="card position-relative">
       <div class="card__rank position-absolute">${data.worldRank}</div>
       <p class="card__countryName text-center">${data.countryName}</p>
@@ -45,12 +67,13 @@ export const mapCountriesDataToLi = (data) => {
 
 globalCountriesData && mapCountriesDataToLi(globalCountriesData);
 
-countryInputForm?.addEventListener('submit', async (e) => {
+countryInputForm.addEventListener('submit', async (e: Event) => {
   e.preventDefault();
-  const countryName = countryNameInput.value;
+  const countryName: string = countryNameInput.value;
   countryNameInput.value = "";
 
-  if (!countryName) {
+  // if no country name in input
+  if (!countryName) { 
     alert("Invalid Input");
     return null;
   }
@@ -70,7 +93,8 @@ countryInputForm?.addEventListener('submit', async (e) => {
   }
 });
 
-const fetchCountryDataFromAPI = async (countryName) => {
+
+const fetchCountryDataFromAPI  = async (countryName: string): Promise<ICountryDataObject> => {
   countryName = capitalizeTheWord(countryName);
   const response = await fetch(`https://world-population.p.rapidapi.com/population?country_name=${countryName}`, {
     "method": "GET",
@@ -82,11 +106,12 @@ const fetchCountryDataFromAPI = async (countryName) => {
   const data = await response.json();
   if (!data.ok) return null;
 
-  const { body: { population, country_name, ranking, world_share } } = data;
+  const { body: { population, country_name, ranking, world_share } }: { body: IApiDataObject}  = data;
+
   return {
     worldRank: ranking,
     countryName: country_name,
-    population: population.toFixed(2),
+    population: Number(population.toFixed(2)),
     worldShare: world_share
   }
 }

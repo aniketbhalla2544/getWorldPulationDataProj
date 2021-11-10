@@ -1,0 +1,9 @@
+{
+  "watch": "true",
+  "compilerOptions": {
+    "rootDir": "./src/ts",
+    "outDir": "./src/js",
+    "target": "es2019",
+  },
+  "lib": ["es6", "es2021", "esnext"]
+}
