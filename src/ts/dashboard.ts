@@ -1,8 +1,8 @@
-import { $_getElement, localStorage, mapCountriesDataToLi } from './index.js';
+import { $_getElement, localStorage, mapCountriesDataToLi, IGlobalCountriesData } from './index.js';
 
-const cardsContainer = $_getElement<HTMLUListElement>(".cards__container");
-const clearBtn = $_getElement<HTMLButtonElement>("#clearBtn");
-const dashboardData = JSON.parse(localStorage.getItem('globalCountriesData'));
+const cardsContainer: HTMLUListElement = $_getElement<HTMLUListElement>(".cards__container");
+const clearBtn: HTMLButtonElement = $_getElement<HTMLButtonElement>("#clearBtn");
+const dashboardData: IGlobalCountriesData = JSON.parse(localStorage.getItem('globalCountriesData'));
 
 if (dashboardData.length > 0) {
   mapCountriesDataToLi(dashboardData);

@@ -7,7 +7,6 @@ const countryInputForm = $_getElement('#populationForm');
 const countryNameInput = $_getElement('#populationInput');
 const cardsContainer = $_getElement('.cards__container');
 let globalCountriesData = (_a = JSON.parse(localStorage.getItem('globalCountriesData'))) !== null && _a !== void 0 ? _a : [];
-// left
 const addDataToLocalStorage = () => {
     localStorage.setItem('globalCountriesData', JSON.stringify(globalCountriesData));
 };

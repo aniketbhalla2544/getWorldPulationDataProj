@@ -12,7 +12,7 @@ interface ICountryDataObject {
   worldShare: number
 }
 
-type IGlobalCountriesData = ICountryDataObject[] | void[];
+export type IGlobalCountriesData = ICountryDataObject[];
 
 export const localStorage: Storage = window.localStorage;
 
@@ -26,30 +26,29 @@ const cardsContainer = $_getElement<HTMLUListElement>('.cards__container');
 
 let globalCountriesData: IGlobalCountriesData = JSON.parse(localStorage.getItem('globalCountriesData')) ?? [];
 
-// left
 const addDataToLocalStorage: () => void = () => {
   localStorage.setItem('globalCountriesData', JSON.stringify(globalCountriesData));
 }
 
 const doesCountryNameAlreadyExist = (name: string): boolean => {
-  const arr = globalCountriesData.filter((data: IGlobalCountriesData) => {
-    return data.countryName.toLowerCase() as string === name.toLowerCase() as string
+  const arr: IGlobalCountriesData = globalCountriesData.filter((data: ICountryDataObject) => {
+    return <string>data.countryName.toLowerCase() === <string>name.toLowerCase()
   });
   return (arr.length < 1) ? false : true;
 }
 
-const addToglobalCountriesData = (data: ICountryDataObject) => {
+const addToglobalCountriesData = (data: ICountryDataObject): void => {
   globalCountriesData = [...globalCountriesData, data];
 }
 
-const capitalizeTheWord = (word: string) => {
+const capitalizeTheWord = (word: string): string => {
   word = word.trim().toLowerCase();
   const characterArray: string[] = word.split("");
   characterArray[0] = characterArray[0].toUpperCase();
   return characterArray.join('');
 }
 
-export const mapCountriesDataToLi = (data) => {
+export const mapCountriesDataToLi = (data: IGlobalCountriesData): void => {
   data.map((data: ICountryDataObject, index: number) => {
     if (index === 0) cardsContainer.innerHTML = "";
     const countryCard: string = `
